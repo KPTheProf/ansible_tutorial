@@ -5,16 +5,36 @@
   tasks:
 
   - name: update repository index
+    apt:
+      update_cache: yes
+    when: ansible_distribution in ["Debian", "Ubuntu"]
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+      state: latest
+    when: ansible_distribution in ["Debian", "Ubuntu"]
+
+  - name: add php support for apache
+    apt:
+      name: libapache2-mod-php
+      state: latest
+    when: ansible_distribution in ["Debian", "Ubuntu"]
+
+  - name: update repository index
     apk:
       update_cache: yes
+    when: ansible_distribution == "Alpine"
 
   - name: install apache2 package
     apk:
       name: apache2
       state: latest
+    when: ansible_distribution == "Alpine"
+
 
   - name: add php support for apache
     apk:
-      name: libapache2-mod-php
+      name: php
       state: latest
-
+    when: ansible_distribution == "Alpine"
